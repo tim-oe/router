@@ -212,9 +212,9 @@
   </sysctl>
   <system>
     <optimization>normal</optimization>
-    <hostname>OPNsense</hostname>
+    <hostname>fort-apache</hostname>
     <domain>localdomain</domain>
-    <dnsallowoverride/>
+    <dnsallowoverride>1</dnsallowoverride>
     <group>
       <name>admins</name>
       <description>System Administrators</description>
@@ -233,7 +233,7 @@
     </user>
     <nextuid>2000</nextuid>
     <nextgid>2000</nextgid>
-    <timezone>Etc/UTC</timezone>
+    <timezone>America/Chicago</timezone>
     <timeservers>0.opnsense.pool.ntp.org 1.opnsense.pool.ntp.org 2.opnsense.pool.ntp.org 3.opnsense.pool.ntp.org</timeservers>
     <webgui>
       <protocol>https</protocol>
@@ -271,6 +271,18 @@
         <backupdir>OPNsense-Backup</backupdir>
       </nextcloud>
     </backup>
+    <language>en_US</language>
+    <dnsserver>8.8.8.8</dnsserver>
+    <dnsserver>8.8.4.4</dnsserver>
+    <dns1gw>WAN_DHCP</dns1gw>
+    <dns2gw>WAN_DHCP</dns2gw>
+    <dns3gw>none</dns3gw>
+    <dns4gw>none</dns4gw>
+    <dns5gw>none</dns5gw>
+    <dns6gw>none</dns6gw>
+    <dns7gw>none</dns7gw>
+    <dns8gw>none</dns8gw>
+    <use_mfs_tmp>1</use_mfs_tmp>
   </system>
   <interfaces>
     <wan>
@@ -372,6 +384,58 @@
   </nat>
   <filter>
     <rule>
+      <type>block</type>
+      <interface>wan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Block DROP</descr>
+      <direction>in</direction>
+      <category>spamhaus</category>
+      <quick>1</quick>
+      <source>
+        <address>spamhaus_drop</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@192.168.1.100</username>
+        <time>1600308311.4375</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.100</username>
+        <time>1600308311.4376</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>block</type>
+      <interface>wan</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Block EDROP</descr>
+      <direction>in</direction>
+      <category>spamhaus</category>
+      <quick>1</quick>
+      <source>
+        <address>spamhaus_edrop</address>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@192.168.1.100</username>
+        <time>1600308398.2391</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.100</username>
+        <time>1600308398.2391</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
       <type>pass</type>
       <ipprotocol>inet</ipprotocol>
       <descr>Default allow LAN to any rule</descr>
@@ -446,13 +510,13 @@
     <prefer>0.opnsense.pool.ntp.org</prefer>
   </ntpd>
   <widgets>
-    <sequence>system_information-container:00000000-col3:show,services_status-container:00000001-col4:show,gateways-container:00000002-col4:show,interface_list-container:00000003-col4:show</sequence>
+    <sequence>system_information-container:00000000-col3:show,services_status-container:00000001-col4:show,gateways-container:00000002-col4:show,interface_list-container:00000003-col4:show,thermal_sensors-container:00000004-col4:show</sequence>
     <column_count>2</column_count>
   </widgets>
   <revision>
     <username>root@192.168.1.100</username>
-    <time>1600224087.7166</time>
-    <description>/system_usermanager_passwordmg.php made changes</description>
+    <time>1600308398.2557</time>
+    <description>/firewall_rules_edit.php made changes</description>
   </revision>
   <OPNsense>
     <monit version="1.0.8">
@@ -632,7 +696,28 @@
         <geoip>
           <url/>
         </geoip>
-        <aliases/>
+        <aliases>
+          <alias uuid="75b87c3c-2a34-4e6f-bf7e-5abb9b802d97">
+            <enabled>1</enabled>
+            <name>spamhaus_drop</name>
+            <type>url</type>
+            <proto/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>https://www.spamhaus.org/drop/drop.txt</content>
+            <description>spamhaus_drop</description>
+          </alias>
+          <alias uuid="f8193070-cb2d-490f-b474-a92b147ae114">
+            <enabled>1</enabled>
+            <name>spamhaus_edrop</name>
+            <type>url</type>
+            <proto/>
+            <counters>0</counters>
+            <updatefreq/>
+            <content>https://www.spamhaus.org/drop/edrop.txt</content>
+            <description>spamhaus_edrop</description>
+          </alias>
+        </aliases>
       </Alias>
     </Firewall>
     <OpenVPNExport version="0.0.1">
@@ -835,3 +920,4 @@
   </openvpn>
   <staticroutes/>
 </opnsense>
+
