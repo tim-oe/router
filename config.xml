@@ -238,28 +238,35 @@
     <webgui>
       <protocol>https</protocol>
       <ssl-certref>5f6175c035d98</ssl-certref>
+      <port/>
+      <ssl-ciphers/>
+      <interfaces/>
+      <compression/>
     </webgui>
     <disablenatreflection>yes</disablenatreflection>
     <usevirtualterminal>1</usevirtualterminal>
-    <disableconsolemenu/>
+    <disableconsolemenu>1</disableconsolemenu>
     <disablevlanhwfilter>2</disablevlanhwfilter>
     <disablechecksumoffloading>1</disablechecksumoffloading>
     <disablesegmentationoffloading>1</disablesegmentationoffloading>
     <disablelargereceiveoffloading>1</disablelargereceiveoffloading>
-    <ipv6allow/>
     <powerd_ac_mode>hadp</powerd_ac_mode>
     <powerd_battery_mode>hadp</powerd_battery_mode>
     <powerd_normal_mode>hadp</powerd_normal_mode>
     <bogons>
       <interval>monthly</interval>
     </bogons>
-    <kill_states/>
     <backupcount>60</backupcount>
     <crypto_hardware>aesni</crypto_hardware>
     <pf_share_forward>1</pf_share_forward>
     <lb_use_sticky>1</lb_use_sticky>
     <ssh>
       <group>admins</group>
+      <noauto>1</noauto>
+      <interfaces>lan</interfaces>
+      <enabled>enabled</enabled>
+      <passwordauth>1</passwordauth>
+      <permitrootlogin>1</permitrootlogin>
     </ssh>
     <backup>
       <nextcloud version="1.0.0">
@@ -283,6 +290,15 @@
     <dns7gw>none</dns7gw>
     <dns8gw>none</dns8gw>
     <use_mfs_tmp>1</use_mfs_tmp>
+    <serialspeed>115200</serialspeed>
+    <primaryconsole>video</primaryconsole>
+    <prefer_ipv4>1</prefer_ipv4>
+    <dnsallowoverride_exclude/>
+    <rulesetoptimization>basic</rulesetoptimization>
+    <maximumstates/>
+    <maximumfrags/>
+    <aliasesresolveinterval/>
+    <maximumtableentries/>
   </system>
   <interfaces>
     <wan>
@@ -346,6 +362,18 @@
       <enable>1</enable>
       <spoofmac/>
     </opt5>
+    <lo0>
+      <internal_dynamic>1</internal_dynamic>
+      <descr>Loopback</descr>
+      <enable>1</enable>
+      <if>lo0</if>
+      <ipaddr>127.0.0.1</ipaddr>
+      <ipaddrv6>::1</ipaddrv6>
+      <subnet>8</subnet>
+      <subnetv6>128</subnetv6>
+      <type>none</type>
+      <virtual>1</virtual>
+    </lo0>
   </interfaces>
   <dhcpd>
     <lan>
@@ -360,14 +388,16 @@
         <to>192.168.1.100</to>
       </range>
       <winsserver/>
+      <dnsserver>192.168.1.1</dnsserver>
       <dnsserver>8.8.8.8</dnsserver>
-      <dnsserver>8.8.4.4</dnsserver>
       <ntpserver/>
     </lan>
   </dhcpd>
   <unbound>
     <enable>1</enable>
     <domainoverrides/>
+    <custom_options/>
+    <regdhcp>1</regdhcp>
   </unbound>
   <snmpd>
     <syslocation/>
@@ -383,6 +413,292 @@
     </outbound>
   </nat>
   <filter>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>SMB</descr>
+      <direction>any</direction>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>445</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122207.8361</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1604342009.6384</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>WS-Discovery messaging</descr>
+      <direction>any</direction>
+      <category>windows</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>3702</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122220.5141</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.13</username>
+        <time>1604985821.1848</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <os>Windows</os>
+      <descr>WS-Discovery metadata</descr>
+      <direction>any</direction>
+      <category>windows</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>5357-5358</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122237.9398</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.13</username>
+        <time>1604986002.9343</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>scan and fax</descr>
+      <direction>any</direction>
+      <category>printer</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>54925-54926</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122253.3769</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1605118279.1598</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>print file share</descr>
+      <direction>any</direction>
+      <category>windows</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>137</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122265.0958</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1605118877.917</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>snmp</descr>
+      <direction>any</direction>
+      <category>network</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>161</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122312.2759</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1605119249.4042</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>http</descr>
+      <direction>any</direction>
+      <category>network</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>80</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122325.8516</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1605119810.4548</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet46</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>https</descr>
+      <direction>any</direction>
+      <category>network</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <protocol>tcp/udp</protocol>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+        <port>443</port>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122368.204</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1605119834.0633</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>lan,opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Default allow LAN to any rule IP4</descr>
+      <direction>in</direction>
+      <category>general</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122450.6596</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1605121875.5111</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
+    <rule>
+      <type>pass</type>
+      <interface>lan,opt1,opt2,opt3,opt4,opt5</interface>
+      <ipprotocol>inet6</ipprotocol>
+      <statetype>keep state</statetype>
+      <descr>Default allow LAN to any rule IP6</descr>
+      <direction>in</direction>
+      <category>general</category>
+      <floating>yes</floating>
+      <quick>1</quick>
+      <source>
+        <network>lan</network>
+      </source>
+      <destination>
+        <any>1</any>
+      </destination>
+      <updated>
+        <username>root@192.168.1.10</username>
+        <time>1605122458.5987</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </updated>
+      <created>
+        <username>root@192.168.1.10</username>
+        <time>1605121908.5805</time>
+        <description>/firewall_rules_edit.php made changes</description>
+      </created>
+    </rule>
     <rule>
       <type>block</type>
       <interface>wan</interface>
@@ -461,7 +777,7 @@
     </rule>
   </filter>
   <rrd>
-    <enable/>
+    <enable>1</enable>
   </rrd>
   <load_balancer>
     <monitor_type>
@@ -514,9 +830,9 @@
     <column_count>2</column_count>
   </widgets>
   <revision>
-    <username>root@192.168.1.100</username>
-    <time>1600308398.2557</time>
-    <description>/firewall_rules_edit.php made changes</description>
+    <username>(system)</username>
+    <time>1607838809.7163</time>
+    <description>/usr/local/opnsense/mvc/script/run_migrations.php made changes</description>
   </revision>
   <OPNsense>
     <monit version="1.0.8">
@@ -727,9 +1043,6 @@
       <zones/>
       <templates/>
     </captiveportal>
-    <cron version="1.0.1">
-      <jobs/>
-    </cron>
     <TrafficShaper version="1.0.3">
       <pipes/>
       <queues/>
@@ -741,7 +1054,11 @@
       </general>
       <destinations/>
     </Syslog>
-    <IDS version="1.0.3">
+    <Interfaces>
+      <vxlans version="1.0.1"/>
+      <loopbacks version="1.0.0"/>
+    </Interfaces>
+    <IDS version="1.0.5">
       <rules/>
       <userDefinedRules/>
       <files/>
@@ -757,14 +1074,36 @@
         <AlertLogrotate>W0D23</AlertLogrotate>
         <AlertSaveLogs>4</AlertSaveLogs>
         <MPMAlgo>ac</MPMAlgo>
+        <detect>
+          <Profile>medium</Profile>
+          <toclient_groups/>
+          <toserver_groups/>
+        </detect>
         <syslog>0</syslog>
         <syslog_eve>0</syslog_eve>
         <LogPayload>0</LogPayload>
       </general>
     </IDS>
-    <proxy version="1.0.3">
+    <unboundplus>
+      <miscellaneous version="0.0.2">
+        <privatedomain/>
+        <dotservers/>
+      </miscellaneous>
+      <dnsbl version="0.0.1">
+        <service_enabled/>
+        <enabled>0</enabled>
+        <type/>
+        <lists/>
+        <whitelists/>
+      </dnsbl>
+    </unboundplus>
+    <cron version="1.0.2">
+      <jobs/>
+    </cron>
+    <proxy version="1.0.4">
       <general>
         <enabled>0</enabled>
+        <error_pages>opnsense</error_pages>
         <icpPort/>
         <logging>
           <enable>
@@ -778,8 +1117,10 @@
         <dnsV4First>0</dnsV4First>
         <forwardedForHandling>on</forwardedForHandling>
         <uriWhitespaceHandling>strip</uriWhitespaceHandling>
+        <enablePinger>1</enablePinger>
         <useViaHeader>1</useViaHeader>
         <suppressVersion>0</suppressVersion>
+        <connecttimeout/>
         <VisibleEmail>admin@localhost.local</VisibleEmail>
         <VisibleHostname/>
         <cache>
@@ -868,16 +1209,19 @@
         </authentication>
       </forward>
       <pac/>
+      <error_pages>
+        <template/>
+      </error_pages>
     </proxy>
     <Netflow version="1.0.1">
       <capture>
-        <interfaces/>
-        <egress_only/>
+        <interfaces>lan,opt1,opt2,opt3,opt4,opt5,wan</interfaces>
+        <egress_only>wan</egress_only>
         <version>v9</version>
-        <targets/>
+        <targets>127.0.0.1:2056</targets>
       </capture>
       <collect>
-        <enable>0</enable>
+        <enable>1</enable>
       </collect>
       <activeTimeout>1800</activeTimeout>
       <inactiveTimeout>15</inactiveTimeout>
@@ -918,6 +1262,5 @@
     <openvpn-server/>
     <openvpn-client/>
   </openvpn>
-  <staticroutes/>
+  <staticroutes version="1.0.0"/>
 </opnsense>
-
