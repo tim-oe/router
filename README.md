@@ -17,13 +17,19 @@ follow the standard [install instructions](https://opnsense.org/users/get-starte
 
 ## NOTES:
 
-for interweb access
+### for interweb access
 - make sure to add dns servers to the dhcp settings at Services: DHCPv4: \[LAN\]
 - make sure under interface settings Block private networks is unchecked
 
-for enabling additional ports for local lan
+### for enabling additional ports for local lan
 - [configure lan bridge](https://docs.opnsense.org/manual/how-tos/lan_bridge.html)
 - after step 4 make sure to enable and configure the new interface.
+
+### local CA
+- use trust to setup CA
+    - [instructions](https://www.ssltrust.com/help/setup-guides/use-opnsense-ca-certificate-authority#create-root)
+    - add inter cert to "Trusted root CA"
+    - [firefox](https://support.mozilla.org/en-US/kb/setting-certificate-authorities-firefox)s
 
 ## firewall
 - [spamhaus](https://docs.opnsense.org/manual/how-tos/edrop.html)
